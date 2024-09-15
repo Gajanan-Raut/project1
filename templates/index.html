@@ -1,0 +1,437 @@
+{% extends 'base.html' %}
+{% block 'main' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Amazon-Like E-Commerce Page</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .slider {
+            width: 100%;
+            max-width: 1000px;
+            margin: auto;
+            position: relative;
+            overflow: hidden;
+        }
+        .slides {
+            display: flex;
+            width: 500%;
+            animation: slide-animation 20s infinite;
+        }
+        .slides input {
+            display: none;
+        }
+        .slide {
+            width: 20%;
+            transition: 0.6s;
+        }
+        .slide img {
+            width: 100%;
+            vertical-align: middle;
+        }
+
+        @keyframes slide-animation {
+            0% { margin-left: 0; }
+            20% { margin-left: 0; }
+            25% { margin-left: -100%; }
+            45% { margin-left: -100%; }
+            50% { margin-left: -200%; }
+            70% { margin-left: -200%; }
+            75% { margin-left: -300%; }
+            95% { margin-left: -300%; }
+            100% { margin-left: -400%; }
+        }
+
+        .navigation-auto {
+            position: absolute;
+            width: 100%;
+            bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .navigation-manual {
+            position: absolute;
+            width: 100%;
+            margin-top: -40px;
+            display: flex;
+            justify-content: center;
+        }
+        .manual-btn {
+            border: 2px solid white;
+            padding: 5px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.4s;
+        }
+        .manual-btn:not(:last-child) {
+            margin-right: 10px;
+        }
+        .manual-btn:hover {
+            background: white;
+        }
+        #radio1:checked ~ .slides {
+            margin-left: 0;
+        }
+        #radio2:checked ~ .slides {
+            margin-left: -100%;
+        }
+        #radio3:checked ~ .slides {
+            margin-left: -200%;
+        }
+        #radio4:checked ~ .slides {
+            margin-left: -300%;
+        }
+
+    </style>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        /* Carousel Styles */
+        .carousel {
+            position: relative;
+            max-width: 800px;
+            margin: 20px auto;
+            overflow: hidden;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+        }
+        .carousel-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel-slide {
+            min-width: 100%;
+            box-sizing: border-box;
+        }
+        .carousel-slide img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 100;
+            font-size: 24px;
+        }
+        .carousel-button.prev {
+            left: 10px;
+        }
+        .carousel-button.next {
+            right: 10px;
+        }
+    </style>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        /* Navigation Bar */
+        nav {
+            background-color: #232F3E;
+            color: white;
+            padding: 15px;
+        }
+        nav ul {
+            list-style: none;
+            text-align: center;
+        }
+        nav ul li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+        .search-bar {
+            margin: 20px auto;
+            text-align: center;
+        }
+        .search-bar input[type="text"] {
+            padding: 10px;
+            width: 50%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .search-bar input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #FF9900;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        /* Categories */
+        .categories {
+            background-color: #EAEDED;
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+        }
+        .categories div {
+            width: 23%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .categories div:hover {
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+        .categories div img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        .categories div h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .categories div a {
+            color: #FF9900;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        /* Featured Products */
+        .products {
+            padding: 40px 20px;
+            background-color: #F4F4F4;
+        }
+        .products h2 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .product-grid {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .product {
+            background-color: white;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 10px;
+            width: 30%;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        .product h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .product p {
+            color: #777;
+            margin-bottom: 10px;
+        }
+        .product strong {
+            font-size: 20px;
+            color: #333;
+        }
+        .product button {
+            padding: 10px 20px;
+            background-color: #FF9900;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .product button:hover {
+            background-color: #E88D00;
+        }
+        /* Footer */
+        footer {
+            background-color: #232F3E;
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+        }
+        footer p {
+            margin-bottom: 20px;
+        }
+        footer ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            padding: 0;
+        }
+        footer ul li {
+            margin: 0 15px;
+        }
+        footer ul li a {
+            color: white;
+            text-decoration: none;
+        }
+        footer ul li a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+   
+     
+ <!-- Carousel Section -->
+ <div class="carousel">
+    <div class="carousel-container">
+        <div class="carousel-slide">
+            <img src="https://via.placeholder.com/800x400?text=Slide+1" alt="Slide 1">
+        </div>
+        <div class="carousel-slide">
+            <img src="https://via.placeholder.com/800x400?text=Slide+2" alt="Slide 2">
+        </div>
+        <div class="carousel-slide">
+            <img src="https://via.placeholder.com/800x400?text=Slide+3" alt="Slide 3">
+        </div>
+    </div>
+    <button class="carousel-button prev" onclick="moveSlide(-1)">&#10094;</button>
+    <button class="carousel-button next" onclick="moveSlide(1)">&#10095;</button>
+</div>
+
+<!-- JavaScript for Carousel -->
+<script>
+    let index = 0;
+
+    function moveSlide(step) {
+        const slides = document.querySelectorAll('.carousel-slide');
+        const totalSlides = slides.length;
+        index = (index + step + totalSlides) % totalSlides;
+        const newTransformValue = -index * 100;
+        document.querySelector('.carousel-container').style.transform = `translateX(${newTransformValue}%)`;
+    }
+</script>
+
+<!-- Search Bar -->
+
+<div class="slider">
+    <div class="slides">
+        <!-- Radio buttons for manual navigation -->
+        <input type="radio" name="radio-btn" id="radio1" checked>
+        <input type="radio" name="radio-btn" id="radio2">
+        <input type="radio" name="radio-btn" id="radio3">
+        <input type="radio" name="radio-btn" id="radio4">
+
+        <!-- Slide images -->
+        <div class="slide">
+            <img src="https://via.placeholder.com/1000x500?text=Slide+1" alt="Slide 1">
+        </div>
+        <div class="slide">
+            <img src="https://via.placeholder.com/1000x500?text=Slide+2" alt="Slide 2">
+        </div>
+        <div class="slide">
+            <img src="https://via.placeholder.com/1000x500?text=Slide+3" alt="Slide 3">
+        </div>
+        <div class="slide">
+            <img src="https://via.placeholder.com/1000x500?text=Slide+4" alt="Slide 4">
+        </div>
+    </div>
+
+    <!-- Navigation buttons for manual control -->
+    <div class="navigation-manual">
+        <label for="radio1" class="manual-btn"></label>
+        <label for="radio2" class="manual-btn"></label>
+        <label for="radio3" class="manual-btn"></label>
+        <label for="radio4" class="manual-btn"></label>
+    </div>
+</div>
+
+
+<!-- Categories Section -->
+<section class="categories">
+    <div>
+        <img src="https://via.placeholder.com/200x150" alt="Electronics">
+        <h3>Electronics</h3>
+        <a href="#">Shop Now</a>
+    </div>
+    <div>
+        <img src="https://via.placeholder.com/200x150" alt="Fashion">
+        <h3>Fashion</h3>
+        <a href="#">Shop Now</a>
+    </div>
+    <div>
+        <img src="https://via.placeholder.com/200x150" alt="Home">
+        <h3>Home & Kitchen</h3>
+        <a href="#">Shop Now</a>
+    </div>
+    <div>
+        <img src="https://via.placeholder.com/200x150" alt="Books">
+        <h3>Books</h3>
+        <a href="#">Shop Now</a>
+    </div>
+</section>
+
+<!-- Featured Products Section -->
+<section class="products">
+    <h2>Featured Products</h2>
+    <div class="product-grid">
+        <div class="product">
+            <img src="https://via.placeholder.com/300x200" alt="Product 1">
+            <h3>Product 1</h3>
+            <p>Product 1 description goes here.</p>
+            <strong>$49.99</strong>
+            <br><br>
+            <button>Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="https://via.placeholder.com/300x200" alt="Product 2">
+            <h3>Product 2</h3>
+            <p>Product 2 description goes here.</p>
+            <strong>$29.99</strong>
+            <br><br>
+            <button>Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="https://via.placeholder.com/300x200" alt="Product 3">
+            <h3>Product 3</h3>
+            <p>Product 3 description goes here.</p>
+            <strong>$19.99</strong>
+            <br><br>
+            <button>Add to Cart</button>
+        </div>
+    </div>
+</section>
+
+
+
+
+</body>
+</html>
+
+{% endblock 'main' %}
